@@ -17,7 +17,7 @@ import com.example.todoapp.viewmodel.ListTodoViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
-class TodoListFragment : Fragment() {
+class   TodoListFragment : Fragment() {
     private lateinit var viewModel: ListTodoViewModel
     private val adapter = TodoListAdapter(arrayListOf(),
         { viewModel.clearTask(it)})

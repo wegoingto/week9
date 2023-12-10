@@ -18,6 +18,14 @@ interface TodoDao {
     @Query("SELECT * FROM todo WHERE uid= :id")
     fun selectTodo(id:Int): Todo
 
+    @Query("SELECT * FROM todo WHERE is_done = 0 ORDER BY priority DESC")
+    fun all(): List<Todo>
+
+    @Query("SELECT * FROM todo WHERE uid = :id")
+    fun find(id: Int): Todo
+
     @Delete
     fun deleteTodo(todo: Todo)
+    @Query("UPDATE todo SET is_done = 1 WHERE uid= :id")
+    fun setTodo(id: Int): Todo
 }

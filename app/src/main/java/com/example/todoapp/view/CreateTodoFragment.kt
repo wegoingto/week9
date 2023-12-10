@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -28,11 +30,14 @@ class CreateTodoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(DetailTodoViewModel::class.java)
+        val txtTitle = view.findViewById<EditText>(R.id.txtTitle)
+        val txtNotes = view.findViewById<EditText>(R.id.txtNote)
+        val rdGroup = view.findViewById<RadioGroup>(R.id.radioGroupPrio)
         val btnAdd = view.findViewById<Button>(R.id.btnAdd)
+
         btnAdd.setOnClickListener{
-            val txtTitle = view.findViewById<EditText>(R.id.txtTitle)
-            val txtNotes = view.findViewById<EditText>(R.id.txtNote)
-            val todo = Todo(txtTitle.text.toString(), txtNotes.text.toString())
+            val todo = Todo(txtTitle.text.toString(), txtNotes.text.toString(),
+                rdGroup.findViewById<RadioButton>(rdGroup.checkedRadioButtonId).tag.toString().toInt())
             viewModel.addTodo(todo)
             Toast.makeText(it.context, "Todo Created", Toast.LENGTH_SHORT).show()
             Navigation.findNavController(it).popBackStack()
