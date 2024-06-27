@@ -6,34 +6,32 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.todoapp.model.Todo
 import com.example.todoapp.model.TodoDatabase
-import com.example.todoapp.util.buildDb
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-class DetailTodoViewModel(application: Application) :AndroidViewModel(application){
+class DetailTodoViewModel(app: Application) : AndroidViewModel(app) {
     val todo = MutableLiveData<Todo>()
 
-    fun addTodo(todo: Todo){
-        viewModelScope.launch(Dispatchers.IO){
-            val db = buildDb(getApplication())
-            db.todoDao().insert()
+    fun add(todo: Todo) {
+        viewModelScope.launch(Dispatchers.IO) {
+            TodoDatabase(getApplication()).todoDao().insertOrUpdate(todo)
         }
     }
+
     fun fetch(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            val db = buildDb(getApplication())
-            db.todoDao().find(id)
+            todo.postValue(
+                TodoDatabase(getApplication()).todoDao().find(id)
+            )
         }
     }
 
     fun update(todo: Todo) {
         viewModelScope.launch(Dispatchers.IO) {
-            val db = buildDb(getApplication())
-            db.todoDao().insert()
+            TodoDatabase(getApplication()).todoDao().insertOrUpdate(todo)
         }
     }
-
 }

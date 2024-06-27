@@ -8,23 +8,21 @@ import androidx.room.Query
 
 @Dao
 interface TodoDao {
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(vararg todo: Todo)
-
-    @Query("SELECT * FROM todo")
-    fun selectAll() : List<Todo >
-
-    @Query("SELECT * FROM todo WHERE uid= :id")
-    fun selectTodo(id:Int): Todo
+    fun insertOrUpdate(vararg todo: Todo)
 
     @Query("SELECT * FROM todo WHERE is_done = 0 ORDER BY priority DESC")
     fun all(): List<Todo>
 
-    @Query("SELECT * FROM todo WHERE uid = :id")
+    @Query("SELECT * FROM todo WHERE id = :id")
     fun find(id: Int): Todo
 
-    @Delete
-    fun deleteTodo(todo: Todo)
+    @Query("DELETE FROM todo")
+    fun deleteAll()
 
+    @Delete
+    fun delete(todo: Todo)
+
+    @Query("UPDATE todo SET is_done = 1 WHERE id = :id")
+    fun setDone(id: Int)
 }

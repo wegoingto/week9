@@ -15,41 +15,54 @@ import com.example.todoapp.model.Todo
 import com.example.todoapp.viewmodel.DetailTodoViewModel
 
 class EditTodoFragment : Fragment() {
-
-    private var _view: FragmentEditTodoBinding? = null
-    private val view get() = _view!!
+    private var _binding: FragmentEditTodoBinding? = null
+    private val binding get() = _binding!!
 
     private val todoViewModel: DetailTodoViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        todoViewModel.fetch(
+            EditTodoFragmentArgs.fromBundle(requireArguments()).uuid
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _view = FragmentEditTodoBinding.inflate(inflater, container, false)
-        return view.root
+        _binding = FragmentEditTodoBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.onSaveClickListener = View.OnClickListener{ saveChanges() }
+
+        todoViewModel.todo.observe(viewLifecycleOwner) {
+            binding.todo = it
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _view = null
+        _binding = null
     }
 
     private fun saveChanges() {
         todoViewModel.update(
             Todo(
-                title = view.editTextTodoTitle.text.toString(),
-                notes = view.editTextTodoNotes.text.toString(),
-                priority = view.radioGroupPriority.findViewById<RadioButton>(
-                    view.radioGroupPriority.checkedRadioButtonId
+                title = binding.editTextTodoTitle.text.toString(),
+                notes = binding.editTextTodoNotes.text.toString(),
+                priority = binding.radioGroupPriority.findViewById<RadioButton>(
+                    binding.radioGroupPriority.checkedRadioButtonId
                 ).tag.toString().toInt(),
             ).apply {
-                uid= EditTodoFragmentArgs.fromBundle(requireArguments()).uuid
+                id = EditTodoFragmentArgs.fromBundle(requireArguments()).uuid
             }
         )
         Toast.makeText(requireContext(), "Changes saved", Toast.LENGTH_SHORT).show()
-        Navigation.findNavController(view.root).popBackStack()
+        Navigation.findNavController(binding.root).popBackStack()
     }
 }

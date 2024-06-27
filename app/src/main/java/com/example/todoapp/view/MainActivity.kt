@@ -9,16 +9,19 @@ import androidx.navigation.ui.NavigationUI
 import com.example.todoapp.R
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var navController:NavController
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        navController = (supportFragmentManager.findFragmentById(R.id.navigation_main)as NavHostFragment).navController
+
+        navController = (supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment)
+            .navController
+
         NavigationUI.setupActionBarWithNavController(this, navController)
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return NavigationUI.navigateUp(navController,null)
+        return NavigationUI.navigateUp(navController, null)
     }
 }

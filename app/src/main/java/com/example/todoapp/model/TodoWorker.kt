@@ -1,6 +1,6 @@
 package com.example.todoapp.model
 
-import android.app.Activity
+/*import android.app.Activity
 import android.content.Context
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.Worker
@@ -21,3 +21,5 @@ class TodoWorker(val context: Context, val params:WorkerParameters): Worker(cont
     }
 
 }
+
+ */
