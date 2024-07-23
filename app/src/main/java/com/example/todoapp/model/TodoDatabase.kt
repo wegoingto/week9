@@ -25,9 +25,8 @@ abstract class TodoDatabase : RoomDatabase() {
 
         private val MIGRATION_2_3 = object : Migration(2, 3) {
             override fun migrate(db: SupportSQLiteDatabase) {
-                // SQLite does not have a separate Boolean storage class. Instead, Boolean values
-                // are stored as integers 0 (false) and 1 (true).
-                // from SQLite documentation (https://www.sqlite.org/datatype3.html)
+                // SQLite, the database used in Android development, does not have a separate Boolean storage class.
+                // Instead, Boolean values are stored as integers 0 (false) and 1 (true).
                 db.execSQL("ALTER TABLE todo ADD COLUMN is_done INTEGER DEFAULT 0 NOT NULL")
             }
         }
